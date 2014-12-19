@@ -1,0 +1,241 @@
+<dwml xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:noNamespaceSchemaLocation="http://graphical.weather.gov/xml/DWMLgen/schema/DWML.xsd">
+<head>
+<product concise-name="dwmlByDay" operational-mode="developmental" srsName="WGS 1984">
+<creation-date refresh-frequency="PT1H">2014-12-19T09:20:14-06:00</creation-date>
+<category>current observations and forecast</category>
+</product>
+<source>
+<production-center>Memphis, TN</production-center>
+<credit>http://www.srh.noaa.gov/meg</credit>
+<more-information>http://www.nws.noaa.gov/forecasts/xml/</more-information>
+</source>
+</head>
+<data type="forecast">
+<location>
+<location-key>point1</location-key>
+<point latitude="35.89" longitude="-90.66"/>
+<area-description>4 Miles N Jonesboro Municipal Airport AR</area-description>
+<height datum="mean sea level" height-units="feet">351</height>
+</location>
+<moreWeatherInformation applicable-location="point1">
+http://forecast.weather.gov/MapClick.php?lat=35.89&lon=-90.66
+</moreWeatherInformation>
+<time-layout time-coordinate="local" summarization="12hourly">
+<layout-key>k-p12h-n13-1</layout-key>
+<start-valid-time period-name="Today">2014-12-19T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Tonight">2014-12-19T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Saturday">2014-12-20T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Saturday Night">2014-12-20T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Sunday">2014-12-21T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Sunday Night">2014-12-21T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Monday">2014-12-22T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Monday Night">2014-12-22T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Tuesday">2014-12-23T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Tuesday Night">2014-12-23T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Wednesday">2014-12-24T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Wednesday Night">2014-12-24T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Christmas Day">2014-12-25T06:00:00-06:00</start-valid-time>
+</time-layout>
+<time-layout time-coordinate="local" summarization="12hourly">
+<layout-key>k-p24h-n7-1</layout-key>
+<start-valid-time period-name="Today">2014-12-19T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Saturday">2014-12-20T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Sunday">2014-12-21T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Monday">2014-12-22T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Tuesday">2014-12-23T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Wednesday">2014-12-24T06:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Christmas Day">2014-12-25T06:00:00-06:00</start-valid-time>
+</time-layout>
+<time-layout time-coordinate="local" summarization="12hourly">
+<layout-key>k-p24h-n6-2</layout-key>
+<start-valid-time period-name="Tonight">2014-12-19T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Saturday Night">2014-12-20T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Sunday Night">2014-12-21T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Monday Night">2014-12-22T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Tuesday Night">2014-12-23T18:00:00-06:00</start-valid-time>
+<start-valid-time period-name="Wednesday Night">2014-12-24T18:00:00-06:00</start-valid-time>
+</time-layout>
+<parameters applicable-location="point1">
+<temperature type="maximum" units="Fahrenheit" time-layout="k-p24h-n7-1">
+<name>Daily Maximum Temperature</name>
+<value>42</value>
+<value>45</value>
+<value>46</value>
+<value>54</value>
+<value>49</value>
+<value>44</value>
+<value>50</value>
+</temperature>
+<temperature type="minimum" units="Fahrenheit" time-layout="k-p24h-n6-2">
+<name>Daily Minimum Temperature</name>
+<value>32</value>
+<value>30</value>
+<value>39</value>
+<value>42</value>
+<value>35</value>
+<value>32</value>
+</temperature>
+<probability-of-precipitation type="12 hour" units="percent" time-layout="k-p12h-n13-1">
+<name>12 Hourly Probability of Precipitation</name>
+<value>30</value>
+<value>30</value>
+<value xsi:nil="true"/>
+<value xsi:nil="true"/>
+<value xsi:nil="true"/>
+<value xsi:nil="true"/>
+<value>20</value>
+<value>40</value>
+<value>50</value>
+<value>20</value>
+<value xsi:nil="true"/>
+<value xsi:nil="true"/>
+<value xsi:nil="true"/>
+</probability-of-precipitation>
+<weather time-layout="k-p12h-n13-1">
+<name>Weather Type, Coverage, Intensity</name>
+<weather-conditions weather-summary="Chance Rain"/>
+<weather-conditions weather-summary="Chance Rain"/>
+<weather-conditions weather-summary="Partly Sunny"/>
+<weather-conditions weather-summary="Partly Cloudy"/>
+<weather-conditions weather-summary="Partly Sunny"/>
+<weather-conditions weather-summary="Mostly Cloudy"/>
+<weather-conditions weather-summary="Slight Chc Rain"/>
+<weather-conditions weather-summary="Chance Rain"/>
+<weather-conditions weather-summary="Chance Rain"/>
+<weather-conditions weather-summary="Slight Chc Rain/Snow"/>
+<weather-conditions weather-summary="Mostly Sunny"/>
+<weather-conditions weather-summary="Mostly Clear"/>
+<weather-conditions weather-summary="Mostly Sunny"/>
+</weather>
+<conditions-icon type="forecast-NWS" time-layout="k-p12h-n13-1">
+<name>Conditions Icon</name>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/ra30.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/nra30.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/bkn.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/nsct.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/bkn.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/nbkn.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/ra20.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/nra40.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/ra50.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/nrasn20.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/sct.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/nfew.png
+</icon-link>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/sct.png
+</icon-link>
+</conditions-icon>
+<wordedForecast time-layout="k-p12h-n13-1" dataSource="megNetcdf" wordGenerator="markMitchell">
+<name>Text Forecast</name>
+<text>
+A 30 percent chance of rain after noon. Mostly cloudy, with a high near 42. East northeast wind around 5 mph.
+</text>
+<text>
+A 30 percent chance of rain before midnight. Cloudy, with a low around 32. Northeast wind around 5 mph. New precipitation amounts of less than a tenth of an inch possible.
+</text>
+<text>
+Partly sunny, with a high near 45. Calm wind becoming east around 5 mph.
+</text>
+<text>
+Partly cloudy, with a low around 30. Calm wind becoming east northeast around 5 mph.
+</text>
+<text>
+Partly sunny, with a high near 46. East southeast wind around 5 mph.
+</text>
+<text>
+Mostly cloudy, with a low around 39. East wind around 5 mph becoming south after midnight.
+</text>
+<text>
+A 20 percent chance of rain. Partly sunny, with a high near 54. South wind 5 to 10 mph.
+</text>
+<text>
+A 40 percent chance of rain. Mostly cloudy, with a low around 42. South wind 5 to 10 mph.
+</text>
+<text>
+A 50 percent chance of rain. Mostly cloudy, with a high near 49.
+</text>
+<text>
+A slight chance of rain and snow. Mostly cloudy, with a low around 35. Chance of precipitation is 20%.
+</text>
+<text>Mostly sunny, with a high near 44.</text>
+<text>Mostly clear, with a low around 32.</text>
+<text>Mostly sunny, with a high near 50.</text>
+</wordedForecast>
+</parameters>
+</data>
+<data type="current observations">
+<location>
+<location-key>point1</location-key>
+<point latitude="35.84" longitude="-90.64"/>
+<area-description>Jonesboro, Jonesboro Municipal Airport, AR</area-description>
+<height datum="mean sea level" height-units="feet">259</height>
+</location>
+<moreWeatherInformation applicable-location="point1">http://www.nws.noaa.gov/data/obhistory/KJBR.html</moreWeatherInformation>
+<time-layout time-coordinate="local">
+<layout-key>k-p1h-n1-1</layout-key>
+<start-valid-time period-name="current">2014-12-19T08:53:00-06:00</start-valid-time>
+</time-layout>
+<parameters applicable-location="point1">
+<temperature type="apparent" units="Fahrenheit" time-layout="k-p1h-n1-1">
+<value>37</value>
+</temperature>
+<temperature type="dew point" units="Fahrenheit" time-layout="k-p1h-n1-1">
+<value>33</value>
+</temperature>
+<humidity type="relative" time-layout="k-p1h-n1-1">
+<value>86</value>
+</humidity>
+<weather time-layout="k-p1h-n1-1">
+<name>Weather Type, Coverage, Intensity</name>
+<weather-conditions weather-summary="Overcast"/>
+<weather-conditions>
+<value>
+<visibility units="statute miles">10.00</visibility>
+</value>
+</weather-conditions>
+</weather>
+<conditions-icon type="forecast-NWS" time-layout="k-p1h-n1-1">
+<name>Conditions Icon</name>
+<icon-link>
+http://forecast.weather.gov/images/wtf/medium/ovc.png
+</icon-link>
+</conditions-icon>
+<direction type="wind" units="degrees true" time-layout="k-p1h-n1-1">
+<value>40</value>
+</direction>
+<wind-speed type="gust" units="knots" time-layout="k-p1h-n1-1">
+<value>NA</value>
+</wind-speed>
+<wind-speed type="sustained" units="knots" time-layout="k-p1h-n1-1">
+<value>12</value>
+</wind-speed>
+<pressure type="barometer" units="inches of mercury" time-layout="k-p1h-n1-1">
+<value>30.28</value>
+</pressure>
+</parameters>
+</data>
+</dwml>
