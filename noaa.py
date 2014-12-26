@@ -6,7 +6,7 @@ from lxml import etree
 root = etree.parse("http://forecast.weather.gov/MapClick.php"
                    "?lat=35.8916&lon=-90.65833299999997&unit=0&lg=english&FcstType=dwml")
 
-#   root = etree.parse('forecast_sample.xml')
+# root = etree.parse('forecast_sample.xml')
 
 layoutKeys = {}
 
