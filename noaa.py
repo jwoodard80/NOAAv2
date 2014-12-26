@@ -10,6 +10,8 @@ root = etree.parse("http://forecast.weather.gov/MapClick.php"
 
 layoutKeys = {}
 
+test1 = root.xpath('/dwml/data[1]/location[1]/area-description')
+print test1[0].text
 
 for timeLayouts in root.findall('.//time-layout'):
     layoutKeys[timeLayouts.find('layout-key').text] = []
@@ -47,7 +49,7 @@ for x in root.findall('.//weather'):
             layoutKeys[x.get('time-layout')][i].append(conditions.get('weather-summary'))
         i += 1
 
-for x in root.findall('wordedForecast'):
+for x in root.findall('.//wordedForecast'):
     i = 0
     for forecast in x.findall('text'):
         layoutKeys[x.get('time-layout')][i].append(forecast.text)
