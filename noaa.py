@@ -11,7 +11,7 @@ root = etree.parse("http://forecast.weather.gov/MapClick.php"
 layoutKeys = {}
 
 test1 = root.xpath('/dwml/data[1]/location[1]/area-description')
-print test1[0].text
+
 
 for timeLayouts in root.findall('.//time-layout'):
     layoutKeys[timeLayouts.find('layout-key').text] = []
@@ -24,11 +24,9 @@ temps1 = {}
 for temps in root.findall('.//temperature'):
     i = 0
     for test in temps.findall("value"):
-        print layoutKeys[temps.get('time-layout')][i].append(test.text)
-        print str(i) + ' ' + test.text
-        #print test.text
+        layoutKeys[temps.get('time-layout')][i].append(test.text)
         i += 1
-    print temps.get('time-layout')
+
     # print test
 
 # re-format this as a function
@@ -57,3 +55,39 @@ for x in root.findall('.//wordedForecast'):
 
 
 print 'end, the last time'
+
+'''
+Knots * 1.15 = MPH
+
+
+
+Wind Direction Conversion Table
+
+<conversion-table>
+ <conversion-key>wind-direction</conversion-key>
+ <start-value>23</start-value>
+ <end-value>67</end-value>
+ <equivalent-value>NE</equivalent-value>
+ <start-value>68</start-value>
+ <end-value>112</end-value>
+ <equivalent-value>E</equivalent-value>
+ <start-value>113</start-value>
+ <end-value>157</end-value>
+ <equivalent-value>SE</equivalent-value>
+ <start-value>158</start-value>
+ <end-value>202</end-value>
+ <equivalent-value>SE</equivalent-value>
+ <start-value>203</start-value>
+ <end-value>247</end-value>
+ <equivalent-value>SW</equivalent-value>
+ <start-value>248</start-value>
+ <end-value>292</end-value>
+ <equivalent-value>W</equivalent-value>
+ <start-value>293</start-value>
+ <end-value>337</end-value>
+ <equivalent-value>NW</equivalent-value>
+ <start-value>338</start-value>
+ <end-value>22</end-value>
+ <equivalent-value>N</equivalent-value>
+ </conversion-table>
+'''

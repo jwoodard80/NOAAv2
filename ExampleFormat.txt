@@ -1,0 +1,13 @@
+Jonesboro, Jonesboro Municipal Airport AR
+-----------------------------------------
+Lat: 35.89 | Lon -90.66 | Sea Level: 259
+
+Current obervations: Light Rain Fog/Mist
+----------------------------------------
+Temp: 45 | Dew Point: 44 | Humidity: 97 
+Visibility: 4.00 Miles | Wind: N 9 
+Barometer: 30.14in
+
+Forecast
+------------
+Tonight | Sunday Night
