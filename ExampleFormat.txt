@@ -9,5 +9,18 @@ Visibility: 4.00 Miles | Wind: N 9
 Barometer: 30.14in
 
 Forecast
-------------
-Tonight | Sunday Night
+----------
+Day          | T  |  P  | Forecast
+------------------------------------
+Monday       | 23 | 70  | Partly Cloudy
+------------------------------------
+Monday Night | 20 | 60  | Rain
+------------------------------------
+Tuesday      | 40 | 0   | Sunny
+
+Today
+-----
+Cloudy, with a high near 38. North northeast wind around 5 mph.
+New precipitation amounts of less than a tenth of an inch possible.
+
+

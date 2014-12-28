@@ -54,7 +54,13 @@ for x in root.findall('.//wordedForecast'):
         i += 1
 
 
-print 'end, the last time'
+for k, v in layoutKeys.iteritems():
+    for l in v:
+        print l[0] + ' | ',
+
+
+
+print ''
 
 '''
 Knots * 1.15 = MPH
