@@ -1,74 +1,59 @@
 __author__ = 'jwoodard'
 
-
 from lxml import etree
 
 root = etree.parse("http://forecast.weather.gov/MapClick.php"
                    "?lat=35.8916&lon=-90.65833299999997&unit=0&lg=english&FcstType=dwml")
 
-# root = etree.parse('forecast_sample.xml')
+weather = {}
+currently = root.xpath('/dwml/data[1]/location[1]/area-description')
+fortnight = root.xpath("/dwml/data[1]/time-layout[1]/layout-key[1]")[0].text
 
-layoutKeys = {}
+for x in root.xpath('/dwml/data[1]/time-layout[1]'):
+    weather[x.find('layout-key').text] = []
 
-test1 = root.xpath('/dwml/data[1]/location[1]/area-description')
+    for y in x.findall('start-valid-time'):
+        z = [y.get('period-name')]
+        weather[x.find('layout-key').text].append(z)
 
+for x in root.xpath('/dwml/data[1]/parameters[1]/temperature'):
+    i = 0 if x.get("time-layout")[-1] == '1' else 1
 
-for timeLayouts in root.findall('.//time-layout'):
-    layoutKeys[timeLayouts.find('layout-key').text] = []
+    for y in x.findall("value"):
+        weather[fortnight][i].append(y.text)
+        i += 2
 
-    for StartValidTime in timeLayouts.findall('start-valid-time'):
-        test = [StartValidTime.get('period-name')]
-        layoutKeys[timeLayouts.find('layout-key').text].append(test)
-
-temps1 = {}
-for temps in root.findall('.//temperature'):
+for x in root.findall('.//probability-of-precipitation'):
     i = 0
-    for test in temps.findall("value"):
-        layoutKeys[temps.get('time-layout')][i].append(test.text)
-        i += 1
 
-    # print test
-
-# re-format this as a function
-
-for precip in root.findall('.//probability-of-precipitation'):
-    i = 0
-    for rain in precip.findall('value'):
-        if rain.text is not None:
-            layoutKeys[precip.get('time-layout')][i].append(rain.text)
+    for y in x.findall('value'):
+        if y.text is not None:
+            weather[x.get('time-layout')][i].append(y.text)
         else:
-            layoutKeys[precip.get('time-layout')][i].append(str(0))
+            weather[x.get('time-layout')][i].append(str(0))
         i += 1
 
 for x in root.findall('.//weather'):
     i = 0
-    for conditions in x.findall('weather-conditions'):
-        if conditions.get('weather-summary'):
-            layoutKeys[x.get('time-layout')][i].append(conditions.get('weather-summary'))
+
+    for y in x.findall('weather-conditions'):
+        if y.get('weather-summary'):
+            weather[fortnight][i].append(y.get('weather-summary'))
         i += 1
 
 for x in root.findall('.//wordedForecast'):
     i = 0
-    for forecast in x.findall('text'):
-        layoutKeys[x.get('time-layout')][i].append(forecast.text)
+
+    for y in x.findall('text'):
+        weather[x.get('time-layout')][i].append(y.text)
         i += 1
-
-
-for k, v in layoutKeys.iteritems():
-    for l in v:
-        print l[0] + ' | ',
-
-
 
 print ''
 
 '''
 Knots * 1.15 = MPH
 
-
-
 Wind Direction Conversion Table
-
 <conversion-table>
  <conversion-key>wind-direction</conversion-key>
  <start-value>23</start-value>
