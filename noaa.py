@@ -1,6 +1,7 @@
 __author__ = 'jwoodard'
 
 from lxml import etree
+from tabulate import tabulate
 
 root = etree.parse("http://forecast.weather.gov/MapClick.php"
                    "?lat=35.8916&lon=-90.65833299999997&unit=0&lg=english&FcstType=dwml")
@@ -47,6 +48,16 @@ for x in root.findall('.//wordedForecast'):
     for y in x.findall('text'):
         weather[x.get('time-layout')][i].append(y.text)
         i += 1
+
+headers = ["Time", "Temp", "Precip","test","test2", "Forecast"]
+
+for k,v in weather.iteritems():
+    print tabulate(v, headers, tablefmt="grid")
+    for days in v:
+        pass
+        # print tabulate([days])
+        # print '{} | {} | {} | {} '.format(*days)
+
 
 print ''
 
