@@ -6,6 +6,18 @@ from tabulate import tabulate
 root = etree.parse("http://forecast.weather.gov/MapClick.php"
                    "?lat=35.8916&lon=-90.65833299999997&unit=0&lg=english&FcstType=dwml")
 
+current =[]
+current.append(root.xpath('/dwml/data[2]/location/area-description')[0].text)
+for x in root.xpath('/dwml/data[2]/location/point')[0].values():
+    current.append(x)
+current.append(root.xpath('/dwml/data[2]/location/height')[0].text)
+current.append(root.xpath('/dwml/data[2]/parameters[1]/weather[1]/weather-conditions[1]')[0].get('weather-summary'))
+current.append(root.xpath('/dwml/data[2]/parameters[1]/temperature[1]/value[1]')[0].text)
+current.append(root.xpath('/dwml/data[2]/parameters[1]/temperature[2]/value[1]')[0].text)
+current.append(root.xpath('/dwml/data[2]/parameters[1]/humidity[1]/value[1]')[0].text)
+current.append(root.xpath('/dwml/data[2]/parameters[1]/weather[1]/weather-conditions[2]/value[1]/visibility[1]')[0].text)
+current.append(root.xpath('/dwml/data[2]/parameters[1]/pressure[1]/value[1]')[0].text)
+
 weather = {}
 currently = root.xpath('/dwml/data[1]/location[1]/area-description')
 fortnight = root.xpath("/dwml/data[1]/time-layout[1]/layout-key[1]")[0].text
@@ -34,7 +46,7 @@ for x in root.findall('.//probability-of-precipitation'):
             weather[x.get('time-layout')][i].append(str(0))
         i += 1
 
-for x in root.findall('.//weather'):
+for x in root.xpath('/dwml/data[1]/parameters[1]/weather'):
     i = 0
 
     for y in x.findall('weather-conditions'):
@@ -49,16 +61,30 @@ for x in root.findall('.//wordedForecast'):
         weather[x.get('time-layout')][i].append(y.text)
         i += 1
 
-headers = ["Time", "Temp", "Precip","test","test2", "Forecast"]
 
-for k,v in weather.iteritems():
+
+
+# Point Forecast
+print '''
+{}
+-----------------------------------------
+Lat: {} | Lon {} | Sea Level: {}
+
+Current obervations: {}
+----------------------------------------
+Temp: {} | Dew Point: {} | Humidity: {}
+Visibility: {} Miles | Wind: N 9
+Barometer: {} inches
+'''.format(*current)
+print '\n'
+print "7-Day Weather      "
+print '-------------------'
+
+headers = ["Time", "Temp", "Precip", "Overall", "Forecast"]
+for k, v in weather.iteritems():
     print tabulate(v, headers, tablefmt="grid")
-    for days in v:
-        pass
-        # print tabulate([days])
-        # print '{} | {} | {} | {} '.format(*days)
 
-
+# ----------------------------------------------------------------------
 print ''
 
 '''
