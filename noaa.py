@@ -1,12 +1,37 @@
 __author__ = 'jwoodard'
 
+# TODO: Implement degrees to Compass direction
+'''
+23  - 67  NE
+68  - 112 E
+113 - 157 SE
+158 - 202 S
+203 - 247 SW
+248 - 292 W
+293 - 337 NW
+338 - 22  N
+'''
+
 from lxml import etree
 from tabulate import tabulate
+import requests
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("zipcode", help="Zipcode",
+                    type=str)
+args = parser.parse_args()
+
+url = "http://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php"
+query = {'listZipCodeList': args.zipcode}
+root = etree.fromstring(requests.get(url, params=query).text)
+location = root.xpath('/dwml/latLonList[1]')[0].text
+LatLonList = location.split(',')
 
 root = etree.parse("http://forecast.weather.gov/MapClick.php"
-                   "?lat=35.8916&lon=-90.65833299999997&unit=0&lg=english&FcstType=dwml")
-
-current =[]
+                   "?lat="+LatLonList[0]+"&lon="+LatLonList[1]+"&unit=0&lg=english&FcstType=dwml")
+current = []
 current.append(root.xpath('/dwml/data[2]/location/area-description')[0].text)
 for x in root.xpath('/dwml/data[2]/location/point')[0].values():
     current.append(x)
@@ -15,18 +40,22 @@ current.append(root.xpath('/dwml/data[2]/parameters[1]/weather[1]/weather-condit
 current.append(root.xpath('/dwml/data[2]/parameters[1]/temperature[1]/value[1]')[0].text)
 current.append(root.xpath('/dwml/data[2]/parameters[1]/temperature[2]/value[1]')[0].text)
 current.append(root.xpath('/dwml/data[2]/parameters[1]/humidity[1]/value[1]')[0].text)
-current.append(root.xpath('/dwml/data[2]/parameters[1]/weather[1]/weather-conditions[2]/value[1]/visibility[1]')[0].text)
+current.append(root.xpath('/dwml/data[2]/parameters[1]/direction[1]/value')[0].text)
+current.append(int(root.xpath('/dwml/data[2]/parameters[1]/wind-speed[2]/value[1]')[0].text) * 1.15)
+current.append(
+    root.xpath('/dwml/data[2]/parameters[1]/weather[1]/weather-conditions[2]/value[1]/visibility[1]')[0].text)
 current.append(root.xpath('/dwml/data[2]/parameters[1]/pressure[1]/value[1]')[0].text)
 
 weather = {}
-currently = root.xpath('/dwml/data[1]/location[1]/area-description')
+
 fortnight = root.xpath("/dwml/data[1]/time-layout[1]/layout-key[1]")[0].text
 
 for x in root.xpath('/dwml/data[1]/time-layout[1]'):
     weather[x.find('layout-key').text] = []
-
+    periods = []
     for y in x.findall('start-valid-time'):
         z = [y.get('period-name')]
+        periods.append(z[0])
         weather[x.find('layout-key').text].append(z)
 
 for x in root.xpath('/dwml/data[1]/parameters[1]/temperature'):
@@ -56,15 +85,14 @@ for x in root.xpath('/dwml/data[1]/parameters[1]/weather'):
 
 for x in root.findall('.//wordedForecast'):
     i = 0
-
+    forecasts = []
     for y in x.findall('text'):
-        weather[x.get('time-layout')][i].append(y.text)
+        forecasts.append(y.text)
+        # weather[x.get('time-layout')][i].append(y.text)
         i += 1
 
+wordedForecasts = zip(periods, forecasts)
 
-
-
-# Point Forecast
 print '''
 {}
 -----------------------------------------
@@ -73,49 +101,20 @@ Lat: {} | Lon {} | Sea Level: {}
 Current obervations: {}
 ----------------------------------------
 Temp: {} | Dew Point: {} | Humidity: {}
-Visibility: {} Miles | Wind: N 9
-Barometer: {} inches
+Wind Direction: {} Degrees | Speed: {} Mph
+Visibility: {} Miles | Barometer: {} Inches
 '''.format(*current)
+
 print '\n'
 print "7-Day Weather      "
 print '-------------------'
 
-headers = ["Time", "Temp", "Precip", "Overall", "Forecast"]
+headers = ["Time", "Temp", "Precip", "Overall"]
 for k, v in weather.iteritems():
     print tabulate(v, headers, tablefmt="grid")
 
-# ----------------------------------------------------------------------
-print ''
-
-'''
-Knots * 1.15 = MPH
-
-Wind Direction Conversion Table
-<conversion-table>
- <conversion-key>wind-direction</conversion-key>
- <start-value>23</start-value>
- <end-value>67</end-value>
- <equivalent-value>NE</equivalent-value>
- <start-value>68</start-value>
- <end-value>112</end-value>
- <equivalent-value>E</equivalent-value>
- <start-value>113</start-value>
- <end-value>157</end-value>
- <equivalent-value>SE</equivalent-value>
- <start-value>158</start-value>
- <end-value>202</end-value>
- <equivalent-value>SE</equivalent-value>
- <start-value>203</start-value>
- <end-value>247</end-value>
- <equivalent-value>SW</equivalent-value>
- <start-value>248</start-value>
- <end-value>292</end-value>
- <equivalent-value>W</equivalent-value>
- <start-value>293</start-value>
- <end-value>337</end-value>
- <equivalent-value>NW</equivalent-value>
- <start-value>338</start-value>
- <end-value>22</end-value>
- <equivalent-value>N</equivalent-value>
- </conversion-table>
-'''
+print '\n'
+print '7-day Extended Forecast'
+print '-------------------------'
+headers = ['Time Period', 'Forecast']
+print tabulate(wordedForecasts, headers, tablefmt='grid')

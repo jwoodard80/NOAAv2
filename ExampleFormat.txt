@@ -24,3 +24,31 @@ Cloudy, with a high near 38. North northeast wind around 5 mph.
 New precipitation amounts of less than a tenth of an inch possible.
 
 
+Wind Direction Conversion Table
+<conversion-table>
+ <conversion-key>wind-direction</conversion-key>
+ <start-value>23</start-value>
+ <end-value>67</end-value>
+ <equivalent-value>NE</equivalent-value>
+ <start-value>68</start-value>
+ <end-value>112</end-value>
+ <equivalent-value>E</equivalent-value>
+ <start-value>113</start-value>
+ <end-value>157</end-value>
+ <equivalent-value>SE</equivalent-value>
+ <start-value>158</start-value>
+ <end-value>202</end-value>
+ <equivalent-value>SE</equivalent-value>
+ <start-value>203</start-value>
+ <end-value>247</end-value>
+ <equivalent-value>SW</equivalent-value>
+ <start-value>248</start-value>
+ <end-value>292</end-value>
+ <equivalent-value>W</equivalent-value>
+ <start-value>293</start-value>
+ <end-value>337</end-value>
+ <equivalent-value>NW</equivalent-value>
+ <start-value>338</start-value>
+ <end-value>22</end-value>
+ <equivalent-value>N</equivalent-value>
+ </conversion-table>
