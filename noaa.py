@@ -1,6 +1,9 @@
 __author__ = 'jwoodard'
 
 # TODO: Implement degrees to Compass direction
+# TODO: Argparse for "all, current, week, week-ext, curr and 7-day *default
+# TODO: Implement degrees to Compass direction
+# TODO: Implement degrees to Compass direction
 '''
 23  - 67  NE
 68  - 112 E
@@ -16,7 +19,7 @@ from lxml import etree
 from tabulate import tabulate
 import requests
 import argparse
-
+import textwrap
 
 parser = argparse.ArgumentParser()
 parser.add_argument("zipcode", help="Zipcode",
@@ -87,18 +90,21 @@ for x in root.findall('.//wordedForecast'):
     i = 0
     forecasts = []
     for y in x.findall('text'):
-        forecasts.append(y.text)
+        forecasts.append(textwrap.fill(y.text, width=120))
         # weather[x.get('time-layout')][i].append(y.text)
         i += 1
 
 wordedForecasts = zip(periods, forecasts)
 
 print '''
+======================
+Current Observations
+======================\n
 {}
 -----------------------------------------
 Lat: {} | Lon {} | Sea Level: {}
 
-Current obervations: {}
+Currently: {}
 ----------------------------------------
 Temp: {} | Dew Point: {} | Humidity: {}
 Wind Direction: {} Degrees | Speed: {} Mph
@@ -106,15 +112,23 @@ Visibility: {} Miles | Barometer: {} Inches
 '''.format(*current)
 
 print '\n'
+print '==============='
 print "7-Day Weather      "
-print '-------------------'
+print '==============='
 
 headers = ["Time", "Temp", "Precip", "Overall"]
 for k, v in weather.iteritems():
     print tabulate(v, headers, tablefmt="grid")
 
 print '\n'
+print '========================='
 print '7-day Extended Forecast'
-print '-------------------------'
-headers = ['Time Period', 'Forecast']
-print tabulate(wordedForecasts, headers, tablefmt='grid')
+print '=========================\n'
+
+for item in wordedForecasts:
+    y = ''
+    print item[0]
+    for x in item[0] + '   ':
+        y += '-'
+    print y
+    print item[1] + "\n"
