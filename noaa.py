@@ -1,21 +1,7 @@
 __author__ = 'jwoodard'
 
-# TODO: Implement degrees to Compass direction
+# TODO: Error Checking
 # TODO: Argparse for "all, current, week, week-ext, curr and 7-day *default
-# TODO: Implement degrees to Compass direction
-# TODO: Implement degrees to Compass direction
-'''
-last check would be 2 ranges 0 - 22 338 - 260
-
-23  - 67  NE
-68  - 112 E
-113 - 157 SE
-158 - 202 S
-203 - 247 SW
-248 - 292 W
-293 - 337 NW
-338 - 22  N
-'''
 
 from lxml import etree
 from tabulate import tabulate
@@ -23,9 +9,27 @@ import requests
 import argparse
 import textwrap
 
+
+def degree2direction(deg):
+    if 23 <= deg <= 67:
+        return "NorthEast"
+    elif 68 <= deg <= 112:
+        return "East"
+    elif 113 <= deg <= 157:
+        return "SouthEast"
+    elif 158 <= deg <= 202:
+        return "South"
+    elif 203 <= deg <= 247:
+        return "SouthWest"
+    elif 248 <= deg <= 292:
+        return "West"
+    elif 293 <= deg <= 337:
+        return "NorthWest"
+    elif 338 <= deg <= 360 or deg <= 22:
+        return "North"
+
 parser = argparse.ArgumentParser()
-parser.add_argument("zipcode", help="Zipcode",
-                    type=str)
+parser.add_argument("zipcode", help="Zipcode", type=str)
 args = parser.parse_args()
 
 url = "http://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php"
@@ -45,7 +49,7 @@ current.append(root.xpath('/dwml/data[2]/parameters[1]/weather[1]/weather-condit
 current.append(root.xpath('/dwml/data[2]/parameters[1]/temperature[1]/value[1]')[0].text)
 current.append(root.xpath('/dwml/data[2]/parameters[1]/temperature[2]/value[1]')[0].text)
 current.append(root.xpath('/dwml/data[2]/parameters[1]/humidity[1]/value[1]')[0].text)
-current.append(root.xpath('/dwml/data[2]/parameters[1]/direction[1]/value')[0].text)
+current.append(degree2direction(int(root.xpath('/dwml/data[2]/parameters[1]/direction[1]/value')[0].text)))
 current.append(int(root.xpath('/dwml/data[2]/parameters[1]/wind-speed[2]/value[1]')[0].text) * 1.15)
 current.append(
     root.xpath('/dwml/data[2]/parameters[1]/weather[1]/weather-conditions[2]/value[1]/visibility[1]')[0].text)
@@ -82,7 +86,6 @@ for x in root.findall('.//probability-of-precipitation'):
 
 for x in root.xpath('/dwml/data[1]/parameters[1]/weather'):
     i = 0
-
     for y in x.findall('weather-conditions'):
         if y.get('weather-summary'):
             weather[fortnight][i].append(y.get('weather-summary'))
@@ -93,7 +96,6 @@ for x in root.findall('.//wordedForecast'):
     forecasts = []
     for y in x.findall('text'):
         forecasts.append(textwrap.fill(y.text, width=120))
-        # weather[x.get('time-layout')][i].append(y.text)
         i += 1
 
 wordedForecasts = zip(periods, forecasts)
@@ -109,7 +111,7 @@ Lat: {} | Lon {} | Sea Level: {}
 Currently: {}
 ----------------------------------------
 Temp: {} | Dew Point: {} | Humidity: {}
-Wind Direction: {} Degrees | Speed: {} Mph
+Wind Direction: {} | Speed: {} Mph
 Visibility: {} Miles | Barometer: {} Inches
 '''.format(*current)
 
