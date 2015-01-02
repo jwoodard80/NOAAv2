@@ -5,6 +5,8 @@ __author__ = 'jwoodard'
 # TODO: Implement degrees to Compass direction
 # TODO: Implement degrees to Compass direction
 '''
+last check would be 2 ranges 0 - 22 338 - 260
+
 23  - 67  NE
 68  - 112 E
 113 - 157 SE
