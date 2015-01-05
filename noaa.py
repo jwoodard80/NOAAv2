@@ -30,16 +30,32 @@ def degree2direction(deg):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("zipcode", help="Zipcode", type=str)
+parser.add_argument("-a", action='store_true', help="Full forecast (Current & 7day)")
+parser.add_argument("-c", action='store_true', help="Current Conditions")
+parser.add_argument("-f", action='store_true', help="7 day forecast")
+parser.add_argument("-e", action='store_true', help="7 day Extended")
 args = parser.parse_args()
 
 url = "http://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php"
 query = {'listZipCodeList': args.zipcode}
-root = etree.fromstring(requests.get(url, params=query).text)
+
+try:
+    root = etree.fromstring(requests.get(url, params=query).text)
+
+except etree.XMLSyntaxError, e:
+    print "Lat/Lon ERROR:" + e
+
+
 location = root.xpath('/dwml/latLonList[1]')[0].text
 LatLonList = location.split(',')
 
-root = etree.parse("http://forecast.weather.gov/MapClick.php"
-                   "?lat="+LatLonList[0]+"&lon="+LatLonList[1]+"&unit=0&lg=english&FcstType=dwml")
+try:
+    root = etree.parse("http://forecast.weather.gov/MapClick.php"
+                    "?lat="+LatLonList[0]+"&lon="+LatLonList[1]+"&unit=0&lg=english&FcstType=dwml")
+except etree.XMLSyntaxError, e:
+    print "ForecastXML Error: " + str(e)
+    exit()
+
 current = []
 current.append(root.xpath('/dwml/data[2]/location/area-description')[0].text)
 for x in root.xpath('/dwml/data[2]/location/point')[0].values():
@@ -100,39 +116,43 @@ for x in root.findall('.//wordedForecast'):
 
 wordedForecasts = zip(periods, forecasts)
 
-print '''
-======================
-Current Observations
-======================\n
-{}
------------------------------------------
-Lat: {} | Lon {} | Sea Level: {}
 
-Currently: {}
-----------------------------------------
-Temp: {} | Dew Point: {} | Humidity: {}
-Wind Direction: {} | Speed: {} Mph
-Visibility: {} Miles | Barometer: {} Inches
-'''.format(*current)
+if args.a or args.c:
+    print '''
+    ======================
+    Current Observations
+    ======================\n
+    {}
+    -----------------------------------------
+    Lat: {} | Lon {} | Sea Level: {}
 
-print '\n'
-print '==============='
-print "7-Day Weather      "
-print '==============='
+    Currently: {}
+    ----------------------------------------
+    Temp: {} | Dew Point: {} | Humidity: {}
+    Wind Direction: {} | Speed: {} Mph
+    Visibility: {} Miles | Barometer: {} Inches
+    '''.format(*current)
 
-headers = ["Time", "Temp", "Precip", "Overall"]
-for k, v in weather.iteritems():
-    print tabulate(v, headers, tablefmt="grid")
+if args.a or args.f:
+    print '\n'
+    print '==============='
+    print "7-Day Weather      "
+    print '==============='
 
-print '\n'
-print '========================='
-print '7-day Extended Forecast'
-print '=========================\n'
+    headers = ["Time", "Temp", "Precip", "Overall"]
+    for k, v in weather.iteritems():
+        print tabulate(v, headers, tablefmt="grid")
 
-for item in wordedForecasts:
-    y = ''
-    print item[0]
-    for x in item[0] + '   ':
-        y += '-'
-    print y
-    print item[1] + "\n"
+if args.a or args.e:
+    print '\n'
+    print '========================='
+    print '7-day Extended Forecast'
+    print '=========================\n'
+
+    for item in wordedForecasts:
+        y = ''
+        print item[0]
+        for x in item[0] + '   ':
+            y += '-'
+        print y
+        print item[1] + "\n"
