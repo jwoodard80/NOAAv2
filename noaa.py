@@ -39,11 +39,13 @@ args = parser.parse_args()
 url = "http://graphical.weather.gov/xml/sample_products/browser_interface/ndfdXMLclient.php"
 query = {'listZipCodeList': args.zipcode}
 
-try:
-    root = etree.fromstring(requests.get(url, params=query).text)
 
-except etree.XMLSyntaxError, e:
-    print "Lat/Lon ERROR:" + e
+try:
+    root = etree.fromstring(requests.get(url, params=query, timeout=2).text)
+
+except (requests.Timeout, requests.ConnectionError, etree.XMLSyntaxError), e:
+    print "Lat/Lon ERROR:" + str(e)
+    exit()
 
 
 location = root.xpath('/dwml/latLonList[1]')[0].text
@@ -52,8 +54,8 @@ LatLonList = location.split(',')
 try:
     root = etree.parse("http://forecast.weather.gov/MapClick.php"
                     "?lat="+LatLonList[0]+"&lon="+LatLonList[1]+"&unit=0&lg=english&FcstType=dwml")
-except etree.XMLSyntaxError, e:
-    print "ForecastXML Error: " + str(e)
+except (requests.Timeout, requests.ConnectionError, etree.XMLSyntaxError), e:
+    print "Forecast ERROR:" + str(e)
     exit()
 
 current = []
